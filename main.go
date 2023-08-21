@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -22,6 +23,12 @@ func main() {
 }
 
 func handlerOK(w http.ResponseWriter, r *http.Request) {
+	sleep := r.URL.Query().Get("sleep")
+	if len(sleep) > 0 {
+		s, _ := strconv.Atoi(sleep)
+		time.Sleep(time.Duration(s) * time.Second)
+		w.Write([]byte(fmt.Sprintf("With sleep (sec %v) ", s)))
+	}
 	w.Write([]byte("OK"))
 }
 
